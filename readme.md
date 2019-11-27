@@ -1,12 +1,16 @@
-summary: How to Write a Codelab
-id: flutter-meetup-sample
-categories: Sample
-tags: medium
+summary: Introduction to Mobile App Development with Flutter
+id: flutter-introduction-workshop
+categories: Flutter, Mobile App Development
+tags: Flutter
 status: Draft 
-authors: Martin
-Feedback Link: https://google.com
+authors: Martin Løseth Jensen
+Feedback Link: 
+---------
+# Prerequsits
+Before getting started, you need to have Flutter, and a supported IDE installed. 
 
-Script I used to demo. I will clean this and use proper md syntax
+Head over to Flutters [getting started page](https://flutter.dev/docs/get-started/install), to install the necessary things needed for this codelab.
+
 1.
 Make sure its setup
 macOS Setup Guide: https://flutter.io/setup-macos

@@ -1,0 +1,25 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-11-29T12:57:10+01:00",
+  "id": "flutter-introduction-workshop",
+  "duration": 0,
+  "title": "Prerequsits",
+  "authors": "Martin Løseth Jensen",
+  "summary": "Introduction to Mobile App Development with Flutter",
+  "source": "readme.md",
+  "theme": "",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "flutter",
+    "mobile app development"
+  ],
+  "tags": [
+    "flutter"
+  ],
+  "url": "flutter-introduction-workshop"
+}
