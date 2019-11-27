@@ -1,3 +1,11 @@
+summary: How to Write a Codelab
+id: flutter-meetup-sample
+categories: Sample
+tags: medium
+status: Draft 
+authors: Martin
+Feedback Link: https://google.com
+
 Script I used to demo. I will clean this and use proper md syntax
 1.
 Make sure its setup
