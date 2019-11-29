@@ -1,0 +1,25 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-11-27T23:28:27+01:00",
+  "id": "flutter-meetup-sample",
+  "duration": 0,
+  "title": "",
+  "authors": "Martin",
+  "summary": "How to Write a Codelab",
+  "source": "readme.md",
+  "theme": "",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "sample"
+  ],
+  "tags": [
+    "medium"
+  ],
+  "feedback": "https://google.com",
+  "url": "flutter-meetup-sample"
+}
