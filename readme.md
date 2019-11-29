@@ -4,7 +4,7 @@ categories: Flutter, Mobile App Development
 tags: Flutter
 status: Draft 
 authors: Martin Løseth Jensen
-Feedback Link: 
+Feedback Link: https://github.com/martinloesethjensen/flutter-introduction
 
 # Prerequsits
 Prerequsits
