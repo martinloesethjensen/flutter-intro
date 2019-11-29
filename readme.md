@@ -93,9 +93,9 @@ void main() {
 Make sure its all working
 
 ```bash 
-flutter doctor
-flutter create todo_app
-flutter run
+$ flutter doctor
+$ flutter create todo_app
+$ flutter run
 ```
 
 Show Dart devTools
