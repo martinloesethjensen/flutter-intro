@@ -6,89 +6,105 @@ status: Draft
 authors: Martin Løseth Jensen
 Feedback Link: https://github.com/martinloesethjensen/flutter-introduction
 
-# Prerequsits
-Prerequsits
----------
+# Introduction to Mobile App Development with Flutter
+
+## Overview
+With this codelab, you'll get a basic understanding of how Flutter works. You'll know just how easy it can be to do prototyping with Flutter. 
+
+We'll have a look at the programming language used with Flutter - Dart.  
+Then we will start creating a simple todo app with very little functionality. 
+
+You'll find the completed code files at the end of this codelab.
+
+## Prerequsits
+
 Before getting started, you need to have Flutter, and a supported IDE installed. 
 
 Head over to Flutters [getting started page](https://flutter.dev/docs/get-started/install), to install the necessary things needed for this codelab.
 
-1.
-Make sure its setup
-macOS Setup Guide: https://flutter.io/setup-macos
-Windows Setup Guide: https://flutter.io/setup-windows
-Linux Setup Guide: https://flutter.io/setup-linux
-Visual Studio Code: https://code.visualstudio.com/
-Visual Studio Code Flutter Extension: https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter
-Android Studio: https://developer.android.com/studio/
+Link to my slides can be found [here](https://docs.google.com/presentation/d/1109B3fQyqNO5zVxh4j4mRO9A9I-5KumPpqgcd6xDKOA/edit?usp=sharing).
 
-Link to my slides
-https://docs.google.com/presentation/d/1PEAaLvDouDzg-k8SSQl8EfdqwrUVkiwb6GXT3M7wlOg/edit?usp=sharing
+When you have installed Flutter and your prefered IDE, then it's time to start. 
 
-First Step
-----------
+## Useful terminal commands
+These are some of the useful terminal commands used when developing Flutter apps. 
+Supported IDE's have Flutter plugins, so it's as easy as pressing a run button in the IDE.
+
 #### Check Flutter version
 ```bash 
-flutter --version
+$ flutter --version
 ```
 
-#### Open simulator
+#### Open simulator on a macOS through the terminal
 ```bash
-open -a Simulator
+$ open -a Simulator
 ```
 
-#### `flutter emulators --launch [DeviceID]`
+#### Launch emulator 
+```bash
+$ flutter emulators --launch [DeviceID]
+```
 Starts up the emulator, installs and opens up your Flutter app.
 
-#### `flutter emulators`
+#### Check emulators
+```bash
+$ flutter emulators
+```
 If you don't know the `DeviceID`, you can run this to get the list of your available emulators.
 
-#### `flutter run -d [DeviceID]`
+#### Run on specific device
+```bash
+$ flutter run -d [DeviceID]
+```
 Starts the project on either an emulator or device. Depending on the specified `DeviceID`.
 
-#### `flutter run -d [DeviceID] --flavor=[flavor]`
+#### Run a build flavor on specific device
+```bash
+$ flutter run -d [DeviceID] --flavor=[flavor]
+```
 To run on Android with more that one build flavor, please specify `flavor`.
 
-#### `flutter devices`
+#### Check physical devices
+```bash
+$ flutter devices
+```
 If you don't know the `DeviceID`, you can run this to get the list of your available devices that have already been started or connected to the computer.
 
-------
+## Trying out Dart
+Duration: 0:05:00
 
-Flutter is a toolset and a framework at the same time.
+[Dartpad](https://dartpad.dartlang.org/) is a great way to learning the basics of dart and testing out Dart code on the browser.
 
-Dartpad for learning basic of dart
-https://dartpad.dartlang.org/
-
-Sample if needed:
-
+**Sample:**
 ```dart
 class Person {
-  String name = 'sumith';
-  int age = 30;
+  String name = 'John Doe';  // string variable 
+  int age = 30;  // integer variable
 }
 
+// Method the takes in two double parameters and return a double
 double addNumbers(double num1, double num2) { return num1 + num2; }
 
 void main() {
   
-  for (int i = 0; i < 5; i++) {
-    print('hello ${i + 1}');
+  // For each loop with index
+  for (int i = 1; i <= 5; i++) {
+    print('hello $i');
   }
   
-  var p1 = Person();
+  var p1 = Person();  // creating an object of class 'Persion' and assigning it to a variable
   var p2 = Person();
-  p2.name ='Andre';
+  p2.name = 'John Johnson';  // setting the name of the person object 
   
-  print(p1.name);
+  print(p1.name);  // get the name of the person object and prints out the value 
   print(p2.name);
   
-  double addnumberResult = addNumbers(2,3);
-  print(addnumberResult);
+  double addNumberResult = addNumbers(2,3);  // calling a method that return a double and puts that value into the variable
+  print(addNumberResult);
 }
 ```
 
-
-## Slide 28
+## 
 
 Make sure its all working
 
@@ -97,15 +113,6 @@ $ flutter doctor
 $ flutter create todo_app
 $ flutter run
 ```
-
-Show Dart devTools
-
-Android Studio or VSCode
-
-
-	Quick update change the click to 2 times.
-
-All good lets work on the Todo app.
 
 For that we need a `task_list`
 create a folder model
@@ -498,7 +505,6 @@ void _deleteTask(Task task) async {
 For consistency lets change floating button to:
 
 ```dart
-For consistency lets change floating button to:
 floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: _addTask,
