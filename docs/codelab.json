@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2020-01-19T23:02:29+01:00",
+  "updated": "2020-01-19T23:17:55+01:00",
   "id": "flutter-introduction-workshop",
   "duration": 0,
   "title": "Introduction to Mobile App Development with Flutter",
@@ -21,6 +21,6 @@
   "tags": [
     "flutter"
   ],
-  "feedback": "https://github.com/martinloesethjensen/flutter-introduction",
+  "feedback": "https://github.com/martinloesethjensen/flutter-intro/issues/new",
   "url": "flutter-introduction-workshop"
 }
