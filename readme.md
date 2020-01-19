@@ -26,54 +26,10 @@ Link to my slides can be found [here](https://docs.google.com/presentation/d/110
 
 When you have installed Flutter and your prefered IDE, then it's time to start. 
 
-## Useful terminal commands
-These are some of the useful terminal commands used when developing Flutter apps. 
-Supported IDE's have Flutter plugins, so it's as easy as pressing a run button in the IDE.
-
-#### Check Flutter version
-```bash 
-$ flutter --version
-```
-
-#### Open simulator on a macOS through the terminal
-```bash
-$ open -a Simulator
-```
-
-#### Launch emulator 
-```bash
-$ flutter emulators --launch [DeviceID]
-```
-Starts up the emulator, installs and opens up your Flutter app.
-
-#### Check emulators
-```bash
-$ flutter emulators
-```
-If you don't know the `DeviceID`, you can run this to get the list of your available emulators.
-
-#### Run on specific device
-```bash
-$ flutter run -d [DeviceID]
-```
-Starts the project on either an emulator or device. Depending on the specified `DeviceID`.
-
-#### Run a build flavor on specific device
-```bash
-$ flutter run -d [DeviceID] --flavor=[flavor]
-```
-To run on Android with more that one build flavor, please specify `flavor`.
-
-#### Check physical devices
-```bash
-$ flutter devices
-```
-If you don't know the `DeviceID`, you can run this to get the list of your available devices that have already been started or connected to the computer.
-
 ## Trying out Dart
-Duration: 0:05:00
-
 [Dartpad](https://dartpad.dartlang.org/) is a great way to learning the basics of dart and testing out Dart code on the browser.
+
+Along with the Flutter 1.12 release in December 11th 2019, dartpad now supports Flutter. Try it out here: [Counter Example](https://dartpad.dev/b6409e10de32b280b8938aa75364fa7b).
 
 **Sample:**
 ```dart
