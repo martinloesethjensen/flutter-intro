@@ -44,43 +44,12 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Useful terminal commands" duration="0">
-        <p>These are some of the useful terminal commands used when developing Flutter apps.<br>Supported IDE&#39;s have Flutter plugins, so it&#39;s as easy as pressing a run button in the IDE.</p>
-<h3 is-upgraded>Check Flutter version</h3>
-<pre><code>$ flutter --version
-</code></pre>
-<h3 is-upgraded>Open simulator on a macOS through the terminal</h3>
-<pre><code>$ open -a Simulator
-</code></pre>
-<h3 is-upgraded>Launch emulator</h3>
-<pre><code>$ flutter emulators --launch [DeviceID]
-</code></pre>
-<p>Starts up the emulator, installs and opens up your Flutter app.</p>
-<h3 is-upgraded>Check emulators</h3>
-<pre><code>$ flutter emulators
-</code></pre>
-<p>If you don&#39;t know the <code>DeviceID</code>, you can run this to get the list of your available emulators.</p>
-<h3 is-upgraded>Run on specific device</h3>
-<pre><code>$ flutter run -d [DeviceID]
-</code></pre>
-<p>Starts the project on either an emulator or device. Depending on the specified <code>DeviceID</code>.</p>
-<h3 is-upgraded>Run a build flavor on specific device</h3>
-<pre><code>$ flutter run -d [DeviceID] --flavor=[flavor]
-</code></pre>
-<p>To run on Android with more that one build flavor, please specify <code>flavor</code>.</p>
-<h3 is-upgraded>Check physical devices</h3>
-<pre><code>$ flutter devices
-</code></pre>
-<p>If you don&#39;t know the <code>DeviceID</code>, you can run this to get the list of your available devices that have already been started or connected to the computer.</p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Trying out Dart" duration="5">
+      <google-codelab-step label="Trying out Dart" duration="0">
         <p><a href="https://dartpad.dartlang.org/" target="_blank">Dartpad</a> is a great way to learning the basics of dart and testing out Dart code on the browser.</p>
-<p><strong>Sample:</strong></p>
+<p>Along with the Flutter 1.12 release in December 11th 2019, dartpad now supports Flutter. Try it out here: <a href="https://dartpad.dev/b6409e10de32b280b8938aa75364fa7b" target="_blank">Counter Example</a>.</p>
+<p><strong>Simple Dart Sample:</strong></p>
 <pre><code>class Person {
-  String name = &#39;John Doe&#39;;  // string variable 
+  String name = &#39;John Doe&#39;;  // string variable
   int age = 30;  // integer variable
 }
 
@@ -96,26 +65,42 @@ void main() {
   
   var p1 = Person();  // creating an object of class &#39;Persion&#39; and assigning it to a variable
   var p2 = Person();
-  p2.name = &#39;John Johnson&#39;;  // setting the name of the person object 
+  p2.name = &#39;John Johnson&#39;;  // setting the name of the person object
   
-  print(p1.name);  // get the name of the person object and prints out the value 
+  print(p1.name);  // get the name of the person object and prints out the value
   print(p2.name);
   
   double addNumberResult = addNumbers(2,3);  // calling a method that return a double and puts that value into the variable
   print(addNumberResult);
 }
 </code></pre>
-<p>Make sure its all working</p>
-<pre><code>$ flutter doctor
-$ flutter create todo_app
-$ flutter run
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create and run the project" duration="0">
+        <p>Run this command to check that everything is good with flutter.</p>
+<pre><code>flutter doctor
 </code></pre>
-<p>For that we need a <code>task_list</code><br>create a folder model<br>To start with lets create a model name it task.dart</p>
+<p>When ready then it is time to create a flutter project. You can easily create one through the commandline with this command.</p>
+<pre><code>flutter create todo_app
+</code></pre>
+<p>Now try and run the app.</p>
+<pre><code>cd todo_app
+flutter run
+</code></pre>
+<p>I have made a file where you can see some useful commands: <a href="https://gist.github.com/martinloesethjensen/8b53ec97834aaea2622d57ec94d3fb5e#file-flutter-commands-md" target="_blank">Useful Terminal Commands</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting Started" duration="0">
+        <p>For that we need a <code>task_list</code><br>create a folder model<br>To start with lets create a model name it task.dart</p>
 <pre><code>class Task {
   String name, details;
   bool completed = false;
 
-  static List&lt;Task&gt; _tasks = [
+  static List&lt;Task&gt; _tasks = [ // The _ in the variable name makes it private.
     Task(&#39;Choose topic&#39;, &#39;testing desc&#39;),
     Task(&#39;Drink coffee&#39;, null),
     Task(&#39;Prepare codelab&#39;, null),
