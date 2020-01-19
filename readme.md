@@ -2,13 +2,14 @@ summary: Introduction to Mobile App Development with Flutter
 id: flutter-introduction-workshop
 categories: Flutter, Mobile App Development
 tags: Flutter
-status: Draft 
+status: Draft
 authors: Martin Løseth Jensen
 Feedback Link: https://github.com/martinloesethjensen/flutter-introduction
 
 # Introduction to Mobile App Development with Flutter
 
 ## Overview
+
 With this codelab, you'll get a basic understanding of how Flutter works. You'll know just how easy it can be to do prototyping with Flutter. 
 
 We'll have a look at the programming language used with Flutter - Dart.  
@@ -27,14 +28,16 @@ Link to my slides can be found [here](https://docs.google.com/presentation/d/110
 When you have installed Flutter and your prefered IDE, then it's time to start. 
 
 ## Trying out Dart
+
 [Dartpad](https://dartpad.dartlang.org/) is a great way to learning the basics of dart and testing out Dart code on the browser.
 
 Along with the Flutter 1.12 release in December 11th 2019, dartpad now supports Flutter. Try it out here: [Counter Example](https://dartpad.dev/b6409e10de32b280b8938aa75364fa7b).
 
-**Sample:**
+**Simple Dart Sample:**
+
 ```dart
 class Person {
-  String name = 'John Doe';  // string variable 
+  String name = 'John Doe';  // string variable
   int age = 30;  // integer variable
 }
 
@@ -50,9 +53,9 @@ void main() {
   
   var p1 = Person();  // creating an object of class 'Persion' and assigning it to a variable
   var p2 = Person();
-  p2.name = 'John Johnson';  // setting the name of the person object 
+  p2.name = 'John Johnson';  // setting the name of the person object
   
-  print(p1.name);  // get the name of the person object and prints out the value 
+  print(p1.name);  // get the name of the person object and prints out the value
   print(p2.name);
   
   double addNumberResult = addNumbers(2,3);  // calling a method that return a double and puts that value into the variable
@@ -60,26 +63,41 @@ void main() {
 }
 ```
 
-## 
+## Create and run the project
 
-Make sure its all working
+Run this command to check that everything is good with flutter.
 
-```bash 
-$ flutter doctor
-$ flutter create todo_app
-$ flutter run
+```bash
+flutter doctor
 ```
+
+When ready then it is time to create a flutter project. You can easily create one through the commandline with this command.
+
+```bash
+flutter create todo_app
+```
+
+Now try and run the app.
+
+```bash
+cd todo_app
+flutter run
+```
+
+I have made a file where you can see some useful commands: [Useful Terminal Commands](https://gist.github.com/martinloesethjensen/8b53ec97834aaea2622d57ec94d3fb5e#file-flutter-commands-md)
+
+## Getting Started 
 
 For that we need a `task_list`
 create a folder model
 To start with lets create a model name it task.dart
 
-```dart 
+```dart
 class Task {
   String name, details;
   bool completed = false;
 
-  static List<Task> _tasks = [
+  static List<Task> _tasks = [ // The _ in the variable name makes it private.
     Task('Choose topic', 'testing desc'),
     Task('Drink coffee', null),
     Task('Prepare codelab', null),
