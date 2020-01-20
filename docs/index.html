@@ -95,7 +95,8 @@ flutter run
       </google-codelab-step>
     
       <google-codelab-step label="Getting Started" duration="0">
-        <p>For that we need a <code>task_list</code><br>create a folder model<br>To start with lets create a model name it task.dart</p>
+        <p>As we are going to have</p>
+<p>For that we need a <code>task_list</code><br>create a folder model<br>To start with lets create a model name it task.dart</p>
 <pre><code>class Task {
   String name, details;
   bool completed = false;
@@ -418,6 +419,265 @@ void _deleteTask(Task task) async {
         child: Icon(Icons.add),
         onPressed: _addTask,
       ),
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Completed files" duration="0">
+        <h2 is-upgraded>main.dart</h2>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;screens/task_list_view.dart&#39;;
+
+void main() =&gt; runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;Flutter Todo Demo&#39;,
+      theme: ThemeData.dark(),
+      home: TaskListView(),
+    );
+  }
+}
+
+</code></pre>
+<h2 is-upgraded>modules/task.dart</h2>
+<pre><code>class Task {
+  String name, details;
+  bool completed = false;
+
+  static List&lt;Task&gt; _tasks = [
+    Task(&#39;Choose topic&#39;, &#39;testing desc&#39;),
+    Task(&#39;Drink coffee&#39;, null),
+    Task(&#39;Prepare codelab&#39;, null),
+    Task(&#39;Update SDK&#39;, &#39;Flutter&#39;),
+  ];
+
+  static List&lt;Task&gt; get tasks =&gt; _tasks;
+
+  static List&lt;Task&gt; get currentTasks =&gt;
+      _tasks.where((task) =&gt; !task.completed).toList();
+
+  static List&lt;Task&gt; get completedTasks =&gt;
+      _tasks.where((task) =&gt; task.completed).toList();
+
+  Task(this.name, this.details);
+}
+
+</code></pre>
+<h2 is-upgraded>screens/task_list_view.dart</h2>
+<pre><code>import &#39;dart:io&#39;;
+
+import &#39;package:flutter/cupertino.dart&#39;;
+import &#39;package:flutter/material.dart&#39;;
+import &#39;package:todo_app_meetup/models/task.dart&#39;;
+
+import &#39;add_task_dialog.dart&#39;;
+
+class TaskListView extends StatefulWidget {
+  @override
+  _TaskListViewState createState() =&gt; _TaskListViewState();
+}
+
+class _TaskListViewState extends State&lt;TaskListView&gt; {
+  void _toggleTask(Task task) {
+    setState(() {
+      task.completed = !task.completed;
+    });
+  }
+
+  void _deleteTask(Task task) async {
+    final confirmed = (Platform.isIOS)
+        ? await showCupertinoDialog&lt;bool&gt;(
+            context: context,
+            builder: (context) =&gt; CupertinoAlertDialog(
+              title: const Text(&#39;Delete Task?&#39;),
+              content: const Text(&#39;This task will be permanently deleted.&#39;),
+              actions: &lt;Widget&gt;[
+                CupertinoDialogAction(
+                  child: const Text(&#39;Delete&#39;),
+                  isDestructiveAction: true,
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: const Text(&#39;Cancel&#39;),
+                  isDefaultAction: true,
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+              ],
+            ),
+          )
+        : await showDialog&lt;bool&gt;(
+            context: context,
+            builder: (context) =&gt; AlertDialog(
+              title: const Text(&#39;Delete Task?&#39;),
+              content: const Text(&#39;This task will be permanently deleted.&#39;),
+              actions: &lt;Widget&gt;[
+                FlatButton(
+                  child: const Text(&#34;CANCEL&#34;),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                FlatButton(
+                  child: const Text(&#34;DELETE&#34;),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            ),
+          );
+
+    if (confirmed ?? false) {
+      setState(() {
+        Task.tasks.remove(task);
+      });
+    }
+  }
+
+  void _addTask() async {
+    final task = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =&gt; AddTaskDialog(),
+        fullscreenDialog: true,
+      ),
+    );
+
+    if (task != null) {
+      setState(() {
+        Task.tasks.add(task);
+      });
+    }
+  }
+
+  Widget _listTile(Task task) {
+    return ListTile(
+      leading: IconButton(
+        icon: (task.completed)
+            ? Icon(Icons.check_circle)
+            : Icon(Icons.radio_button_unchecked),
+        onPressed: () =&gt; _toggleTask(task),
+      ),
+      title: Text(task.name),
+      subtitle: (task.details != null) ? Text(task.details) : null,
+      trailing: IconButton(
+        icon: Icon(Icons.delete_forever),
+        onPressed: () =&gt; _deleteTask(task),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(&#39;Tasks&#39;),
+      ),
+      body: ListView(
+        children: &lt;Widget&gt;[
+          ExpansionTile(
+            title: Text(&#39;Current tasks (${Task.currentTasks.length})&#39;),
+            initiallyExpanded: true,
+            children: &lt;Widget&gt;[
+              for (final task in Task.currentTasks) _listTile(task),
+            ],
+          ),
+          Divider(),
+          ExpansionTile(
+            title: Text(&#39;Completed (${Task.completedTasks.length})&#39;),
+            children: &lt;Widget&gt;[
+              for (final task in Task.completedTasks) _listTile(task),
+            ],
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addTask,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+</code></pre>
+<h2 is-upgraded>screens/add_task_dialog.dart</h2>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:todo_app_meetup/models/task.dart&#39;;
+
+class AddTaskDialog extends StatefulWidget {
+  @override
+  _AddTaskDialogState createState() =&gt; _AddTaskDialogState();
+}
+
+class _AddTaskDialogState extends State&lt;AddTaskDialog&gt; {
+  String _taskName = &#39;&#39;;
+  String _taskDetails;
+
+  void _save() {
+    final task = _taskName.isNotEmpty ? Task(_taskName, _taskDetails) : null;
+    Navigator.of(context).pop(task);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(&#39;New Task&#39;),
+        actions: &lt;Widget&gt;[
+          FlatButton(
+            child: Text(
+              &#39;SAVE&#39;,
+              style: theme.textTheme.body1.copyWith(color: Colors.white),
+            ),
+            onPressed: _save,
+          ),
+        ],
+      ),
+      body: Form(
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: &lt;Widget&gt;[
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              alignment: Alignment.bottomLeft,
+              child: TextField(
+                decoration: const InputDecoration(
+                  labelText: &#39;Name&#39;,
+                  filled: true,
+                ),
+                style: theme.textTheme.headline,
+                onChanged: (value) =&gt; _taskName = value,
+                autofocus: true,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              alignment: Alignment.bottomLeft,
+              child: TextField(
+                decoration: const InputDecoration(
+                  labelText: &#39;Details&#39;,
+                  filled: true,
+                ),
+                onChanged: (value) =&gt; _taskDetails = value,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 </code></pre>
 
 

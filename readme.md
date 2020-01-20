@@ -86,7 +86,9 @@ flutter run
 
 I have made a file where you can see some useful commands: [Useful Terminal Commands](https://gist.github.com/martinloesethjensen/8b53ec97834aaea2622d57ec94d3fb5e#file-flutter-commands-md)
 
-## Getting Started 
+## Getting Started
+
+As we are going to have 
 
 For that we need a `task_list`
 create a folder model
@@ -483,4 +485,272 @@ floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: _addTask,
       ),
+```
+
+## Completed files
+
+### main.dart
+
+```dart
+import 'package:flutter/material.dart';
+import 'screens/task_list_view.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Todo Demo',
+      theme: ThemeData.dark(),
+      home: TaskListView(),
+    );
+  }
+}
+
+```
+
+### modules/task.dart
+
+```dart
+class Task {
+  String name, details;
+  bool completed = false;
+
+  static List<Task> _tasks = [
+    Task('Choose topic', 'testing desc'),
+    Task('Drink coffee', null),
+    Task('Prepare codelab', null),
+    Task('Update SDK', 'Flutter'),
+  ];
+
+  static List<Task> get tasks => _tasks;
+
+  static List<Task> get currentTasks =>
+      _tasks.where((task) => !task.completed).toList();
+
+  static List<Task> get completedTasks =>
+      _tasks.where((task) => task.completed).toList();
+
+  Task(this.name, this.details);
+}
+
+```
+
+### screens/task_list_view.dart
+
+```dart
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:todo_app_meetup/models/task.dart';
+
+import 'add_task_dialog.dart';
+
+class TaskListView extends StatefulWidget {
+  @override
+  _TaskListViewState createState() => _TaskListViewState();
+}
+
+class _TaskListViewState extends State<TaskListView> {
+  void _toggleTask(Task task) {
+    setState(() {
+      task.completed = !task.completed;
+    });
+  }
+
+  void _deleteTask(Task task) async {
+    final confirmed = (Platform.isIOS)
+        ? await showCupertinoDialog<bool>(
+            context: context,
+            builder: (context) => CupertinoAlertDialog(
+              title: const Text('Delete Task?'),
+              content: const Text('This task will be permanently deleted.'),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: const Text('Delete'),
+                  isDestructiveAction: true,
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: const Text('Cancel'),
+                  isDefaultAction: true,
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+              ],
+            ),
+          )
+        : await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Delete Task?'),
+              content: const Text('This task will be permanently deleted.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: const Text("CANCEL"),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                FlatButton(
+                  child: const Text("DELETE"),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            ),
+          );
+
+    if (confirmed ?? false) {
+      setState(() {
+        Task.tasks.remove(task);
+      });
+    }
+  }
+
+  void _addTask() async {
+    final task = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTaskDialog(),
+        fullscreenDialog: true,
+      ),
+    );
+
+    if (task != null) {
+      setState(() {
+        Task.tasks.add(task);
+      });
+    }
+  }
+
+  Widget _listTile(Task task) {
+    return ListTile(
+      leading: IconButton(
+        icon: (task.completed)
+            ? Icon(Icons.check_circle)
+            : Icon(Icons.radio_button_unchecked),
+        onPressed: () => _toggleTask(task),
+      ),
+      title: Text(task.name),
+      subtitle: (task.details != null) ? Text(task.details) : null,
+      trailing: IconButton(
+        icon: Icon(Icons.delete_forever),
+        onPressed: () => _deleteTask(task),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Tasks'),
+      ),
+      body: ListView(
+        children: <Widget>[
+          ExpansionTile(
+            title: Text('Current tasks (${Task.currentTasks.length})'),
+            initiallyExpanded: true,
+            children: <Widget>[
+              for (final task in Task.currentTasks) _listTile(task),
+            ],
+          ),
+          Divider(),
+          ExpansionTile(
+            title: Text('Completed (${Task.completedTasks.length})'),
+            children: <Widget>[
+              for (final task in Task.completedTasks) _listTile(task),
+            ],
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addTask,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+```
+
+### screens/add_task_dialog.dart
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:todo_app_meetup/models/task.dart';
+
+class AddTaskDialog extends StatefulWidget {
+  @override
+  _AddTaskDialogState createState() => _AddTaskDialogState();
+}
+
+class _AddTaskDialogState extends State<AddTaskDialog> {
+  String _taskName = '';
+  String _taskDetails;
+
+  void _save() {
+    final task = _taskName.isNotEmpty ? Task(_taskName, _taskDetails) : null;
+    Navigator.of(context).pop(task);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New Task'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              'SAVE',
+              style: theme.textTheme.body1.copyWith(color: Colors.white),
+            ),
+            onPressed: _save,
+          ),
+        ],
+      ),
+      body: Form(
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              alignment: Alignment.bottomLeft,
+              child: TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  filled: true,
+                ),
+                style: theme.textTheme.headline,
+                onChanged: (value) => _taskName = value,
+                autofocus: true,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              alignment: Alignment.bottomLeft,
+              child: TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Details',
+                  filled: true,
+                ),
+                onChanged: (value) => _taskDetails = value,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 ```

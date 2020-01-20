@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_meetup/models/task.dart';
 
-import 'add_task_dialog.dart'; 
+import 'add_task_dialog.dart';
 
 class TaskListView extends StatefulWidget {
   @override
@@ -12,8 +12,6 @@ class TaskListView extends StatefulWidget {
 }
 
 class _TaskListViewState extends State<TaskListView> {
-  final GlobalKey<State> _completedKey = GlobalKey<State>();
-
   void _toggleTask(Task task) {
     setState(() {
       task.completed = !task.completed;
@@ -115,10 +113,15 @@ class _TaskListViewState extends State<TaskListView> {
       ),
       body: ListView(
         children: <Widget>[
-          for (final task in Task.currentTasks) _listTile(task),
+          ExpansionTile(
+            title: Text('Current tasks (${Task.currentTasks.length})'),
+            initiallyExpanded: true,
+            children: <Widget>[
+              for (final task in Task.currentTasks) _listTile(task),
+            ],
+          ),
           Divider(),
           ExpansionTile(
-            key: _completedKey,
             title: Text('Completed (${Task.completedTasks.length})'),
             children: <Widget>[
               for (final task in Task.completedTasks) _listTile(task),
@@ -128,7 +131,7 @@ class _TaskListViewState extends State<TaskListView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addTask,
-      child: Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
     );
   }
