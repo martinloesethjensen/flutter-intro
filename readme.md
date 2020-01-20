@@ -10,22 +10,22 @@ Feedback Link: https://github.com/martinloesethjensen/flutter-intro/issues/new
 
 ## Overview
 
-With this codelab, you'll get a basic understanding of how Flutter works. You'll know just how easy it can be to do prototyping with Flutter. 
+With this codelab, you'll get a basic understanding of how Flutter works. You'll know just how easy it can be to do prototyping with Flutter.
 
 We'll have a look at the programming language used with Flutter - Dart.  
-Then we will start creating a simple todo app with very little functionality. 
+Then we will start creating a simple todo app with very little functionality.
 
 You'll find the completed code files at the end of this codelab.
 
 ## Prerequsits
 
-Before getting started, you need to have Flutter, and a supported IDE installed. 
+Before getting started, you need to have Flutter, and a supported IDE installed.
 
-Head over to Flutters [getting started page](https://flutter.dev/docs/get-started/install), to install the necessary things needed for this codelab.
+Head over to Flutter's [getting started page](https://flutter.dev/docs/get-started/install), to install the necessary things needed for this codelab.
 
 Link to my slides can be found [here](https://docs.google.com/presentation/d/1109B3fQyqNO5zVxh4j4mRO9A9I-5KumPpqgcd6xDKOA/edit?usp=sharing).
 
-When you have installed Flutter and your prefered IDE, then it's time to start. 
+When you have installed Flutter and your prefered IDE, then it's time to start.
 
 ## Trying out Dart
 
@@ -42,7 +42,7 @@ class Person {
 }
 
 // Method the takes in two double parameters and return a double
-double addNumbers(double num1, double num2) { return num1 + num2; }
+double add(double num1, double num2) { return num1 + num2; }
 
 void main() {
   
@@ -58,7 +58,7 @@ void main() {
   print(p1.name);  // get the name of the person object and prints out the value
   print(p2.name);
   
-  double addNumberResult = addNumbers(2,3);  // calling a method that return a double and puts that value into the variable
+  double addNumberResult = add(2,3);  // calling a method that return a double and puts that value into the variable
   print(addNumberResult);
 }
 ```
@@ -88,11 +88,39 @@ I have made a file where you can see some useful commands: [Useful Terminal Comm
 
 ## Getting Started
 
-As we are going to have 
+First of delete everything in the file `main.dart`. We don't need that code, instead put in this code.
 
-For that we need a `task_list`
-create a folder model
-To start with lets create a model name it task.dart
+The `main` method is the entry point for the application, so that's where we will run our app.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp()); // entry point
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: null, //TODO: Change to the task list view widget.
+    );
+  }
+}
+```
+
+We will change the home parameter later.
+
+## Task: create Task class
+
+As we are going to create a todo app we need to think about what is needed.
+We need a screen with a list of tasks, so let us start of with creating a class called `Task` that has 3 variables: `name`, `details`, and `completed`. Furthermore, we will have to static variables that all Task objects can access.
+
+As this class is what is called a model then let us put this class in a folder we call `models`.
+This folder needs to be created in the `lib` folder.
 
 ```dart
 class Task {
@@ -110,18 +138,33 @@ class Task {
 
   Task(this.name, this.details);  // Constructor with parameters for creating a Task object
 }
+
 ```
 
-Lets delete every thing in `main.dart`
-`main.dart` is the starting point
-Talk about the main function -> is the entry point
+## Task: create TaskListView class
+
+We want this widget to be a list that shows all tasks. Let's start by creating a `StatelessWidget` and then update the `home` parameter in `main.dart`.
 
 ```dart
 import 'package:flutter/material.dart';
-import 'task_list_view.dart';
 
-void main() => runApp(MyApp());
+class TaskListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Tasks'),
+      ),
+      body: Container(), //TODO: Change this to a ListView
+    );
+  }
+}
 
+```
+
+Now change the `home` parameter to take in the `TaskListView` widget:
+
+```dart
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -129,26 +172,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: TaskListView(),
     );
   }
 }
+
 ```
 
-So the home points to `TaskListView`, lets create a `task_list_view.dart`
+## Task: create a ListView of all the tasks
 
-Talk about scaffold
+TODO
 
 ```dart
 import 'package:flutter/material.dart';

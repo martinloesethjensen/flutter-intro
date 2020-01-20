@@ -37,7 +37,7 @@
     
       <google-codelab-step label="Prerequsits" duration="0">
         <p>Before getting started, you need to have Flutter, and a supported IDE installed.</p>
-<p>Head over to Flutters <a href="https://flutter.dev/docs/get-started/install" target="_blank">getting started page</a>, to install the necessary things needed for this codelab.</p>
+<p>Head over to Flutter&#39;s <a href="https://flutter.dev/docs/get-started/install" target="_blank">getting started page</a>, to install the necessary things needed for this codelab.</p>
 <p>Link to my slides can be found <a href="https://docs.google.com/presentation/d/1109B3fQyqNO5zVxh4j4mRO9A9I-5KumPpqgcd6xDKOA/edit?usp=sharing" target="_blank">here</a>.</p>
 <p>When you have installed Flutter and your prefered IDE, then it&#39;s time to start.</p>
 
@@ -54,7 +54,7 @@
 }
 
 // Method the takes in two double parameters and return a double
-double addNumbers(double num1, double num2) { return num1 + num2; }
+double add(double num1, double num2) { return num1 + num2; }
 
 void main() {
   
@@ -70,7 +70,7 @@ void main() {
   print(p1.name);  // get the name of the person object and prints out the value
   print(p2.name);
   
-  double addNumberResult = addNumbers(2,3);  // calling a method that return a double and puts that value into the variable
+  double addNumberResult = add(2,3);  // calling a method that return a double and puts that value into the variable
   print(addNumberResult);
 }
 </code></pre>
@@ -95,8 +95,34 @@ flutter run
       </google-codelab-step>
     
       <google-codelab-step label="Getting Started" duration="0">
-        <p>As we are going to have</p>
-<p>For that we need a <code>task_list</code><br>create a folder model<br>To start with lets create a model name it task.dart</p>
+        <p>First of delete everything in the file <code>main.dart</code>. We don&#39;t need that code, instead put in this code.</p>
+<p>The <code>main</code> method is the entry point for the application, so that&#39;s where we will run our app.</p>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
+
+void main() =&gt; runApp(MyApp()); // entry point
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: &#39;Flutter Demo&#39;,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: null, //TODO: Change to the task list view widget.
+    );
+  }
+}
+</code></pre>
+<p>We will change the home parameter later.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: create Task class" duration="0">
+        <p>As we are going to create a todo app we need to think about what is needed.<br>We need a screen with a list of tasks, so let us start of with creating a class called <code>Task</code> that has 3 variables: <code>name</code>, <code>details</code>, and <code>completed</code>. Furthermore, we will have to static variables that all Task objects can access.</p>
+<p>As this class is what is called a model then let us put this class in a folder we call <code>models</code>.<br>This folder needs to be created in the <code>lib</code> folder.</p>
 <pre><code>class Task {
   String name, details;
   bool completed = false;
@@ -112,39 +138,51 @@ flutter run
 
   Task(this.name, this.details);  // Constructor with parameters for creating a Task object
 }
+
 </code></pre>
-<p>Lets delete every thing in <code>main.dartmain.dart</code> is the starting point<br>Talk about the main function -&gt; is the entry point</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: create TaskListView class" duration="0">
+        <p>We want this widget to be a list that shows all tasks. Let&#39;s start by creating a <code>StatelessWidget</code> and then update the <code>home</code> parameter in <code>main.dart</code>.</p>
 <pre><code>import &#39;package:flutter/material.dart&#39;;
-import &#39;task_list_view.dart&#39;;
 
-void main() =&gt; runApp(MyApp());
+class TaskListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(&#39;Tasks&#39;),
+      ),
+      body: Container(), //TODO: Change this to a ListView
+    );
+  }
+}
 
-class MyApp extends StatelessWidget {
+</code></pre>
+<p>Now change the <code>home</code> parameter to take in the <code>TaskListView</code> widget:</p>
+<pre><code>class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: &#39;Flutter Demo&#39;,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with &#34;flutter run&#34;. You&#39;ll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // &#34;hot reload&#34; (press &#34;r&#34; in the console where you ran &#34;flutter run&#34;,
-        // or simply save your changes to &#34;hot reload&#34; in a Flutter IDE).
-        // Notice that the counter didn&#39;t reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: TaskListView(),
     );
   }
 }
+
 </code></pre>
-<p>So the home points to <code>TaskListView</code>, lets create a <code>task_list_view.dart</code></p>
-<p>Talk about scaffold</p>
-<pre><code>import &#39;package:flutter/material.dart&#39;;
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: create a ListView of all the tasks" duration="0">
+        <pre><code>import &#39;package:flutter/material.dart&#39;;
 
 import &#39;model/task.dart&#39;;
 
