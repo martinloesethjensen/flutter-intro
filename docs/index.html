@@ -110,12 +110,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: null, //TODO: Change to the task list view widget.
+      home: Scaffold(), //TODO: Change to the task list view widget.
     );
   }
 }
 </code></pre>
-<p>We will change the home parameter later.</p>
+<p>We will change the `home parameter later.</p>
 
 
       </google-codelab-step>
@@ -182,7 +182,46 @@ class TaskListView extends StatelessWidget {
       </google-codelab-step>
     
       <google-codelab-step label="Task: create a ListView of all the tasks" duration="0">
-        <pre><code>import &#39;package:flutter/material.dart&#39;;
+        <p>We want to show a list so let us use the <code>ListView</code> widget to display several <code>ListTile</code> elements depending on the amount of tasks. Each <code>ListTile</code> will show an icon, title and subtitle.</p>
+<p>Here we have the <code>ListTile</code> widget with the task information we want to show:</p>
+<pre><code>...
+
+ListTile(
+  leading: IconButton(
+    icon: (task.completed)
+        ? Icon(Icons.check_circle)
+        : Icon(Icons.radio_button_unchecked),
+    onPressed: null, // TODO: handle toggling
+  ),
+  title: Text(task.name),
+  subtitle: (task.details != null) ? Text(task.details) : null,
+),
+
+...
+
+</code></pre>
+<p>We will be putting this in the <code>children</code> parameter of our <code>ListView</code> widget.</p>
+<p>But to display a <code>ListTile</code> for each task in all of our tasks, we need to utilize a for each loop.</p>
+<p>We need to modify our <code>pubspec.yaml</code> so we can use this for each loop functionality.</p>
+<pre><code>environment:
+  sdk: &#34;&gt;=2.2.0 &lt;3.0.0&#34;
+</code></pre>
+<p>We will do it like this so we can iterate through our list of tasks:</p>
+<pre><code>for (final task in Task.tasks)
+  ListTile(
+    leading: IconButton(
+      icon: (task.completed)
+          ? Icon(Icons.check_circle)
+          : Icon(Icons.radio_button_unchecked),
+      onPressed: null, // TODO: handle toggling
+    ),
+    title: Text(task.name),
+    subtitle: (task.details != null) ? Text(task.details) : null,
+  ),
+
+</code></pre>
+<p>Now we can put it in our <code>body</code> parameter of our <code>Scaffold</code> widget. So the code will look like this now:</p>
+<pre><code>import &#39;package:flutter/material.dart&#39;;
 
 import &#39;model/task.dart&#39;;
 
@@ -211,20 +250,50 @@ class TaskListView extends StatelessWidget {
     );
   }
 }
+
 </code></pre>
-<p>We are using a for loop so modify <code>pubspec.yaml</code></p>
-<pre><code>sdk: &#34;&gt;=2.2.2 &lt;3.0.0&#34;
-</code></pre>
-<p>Talk about hotreload, and restart</p>
-<p>Now you got the checkbox, lets see if we can reflect these toggle in code<br>Talk about stateful vs stateless widgets</p>
-<p>In <code>task_list_view.dart</code></p>
-<p>Change <code>onPressed: () =&gt; toggleTask(task),</code></p>
-<p>Change the class  extend to StatefulWidget</p>
-<pre><code>@override
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Make the TaskListView class stateful" duration="0">
+        <p>Now we have the design of the list, so let us handle the toggling of done and not done state.</p>
+<p>First we need to maket the class extend <code>StatefulWidget</code> so we can update and redraw the UI on the screen upon state changes.</p>
+<p>In our <code>ListTile</code> we have an <code>onPressed</code> parameter that handles touch events on out icon. We want to change the task&#39;s state of completed and to do that we need to use a method called <code>setState</code>. This method notifies that there is a change in the state and will then invoke methods to redraw the UI again.</p>
+<p>In <code>task_list_view.dart</code>:</p>
+<p>Change <code>StatelessWidget</code> to <code>StatefulWidget</code> and have the class setup like this:</p>
+<pre><code>class TaskListView extends StatefulWidget {
+
+  @override
   _TaskListViewState createState() =&gt; _TaskListViewState();
+
 }
 
 class _TaskListViewState extends State&lt;TaskListView&gt; {
+  
+  ...
+  
+}
+
+</code></pre>
+<p>Let us handle the touch event:</p>
+<pre><code>    ...
+
+    onPressed: () =&gt; setState(() {
+      task.completed = !task.completed;
+    }),
+
+    ...
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Refactor the code" duration="0">
+        <p>In the same class we will refactor the code by creating a method that takes in a Task as a parameter and will update its completed state.</p>
+<pre><code>  ...
+
   void toggleTask(Task task) {
     setState(() {
       task.completed = !task.completed;
@@ -233,11 +302,17 @@ class _TaskListViewState extends State&lt;TaskListView&gt; {
   
   ...
   
-}
 </code></pre>
-<p>————————  thats pretty easy and awesome check if its break time—————–</p>
-<p>This looks like a long list would be nice if we can seperate our list to the ones completed different</p>
-<p>We extract the list in its own list tile widget</p>
+<p>Apply the mothod call in the <code>onPressed</code> parameter so it will look like this:</p>
+<pre><code>    ...
+
+    onPressed: () =&gt; toggleTask(task),
+
+    ...
+
+</code></pre>
+<p>This looks like a long list, but it would be nice if we seperated our list to avoid having a long <code>build</code> method.</p>
+<p>We will extract the list in to its own list tile widget.</p>
 <pre><code>Widget _listTile(Task task) {
     return ListTile(
       leading: IconButton(
@@ -251,8 +326,15 @@ class _TaskListViewState extends State&lt;TaskListView&gt; {
     );
   }
 </code></pre>
-<p>`for (final task in Task.tasks) _listTile(task),</p>
-<p>Lets modify the model &#34;model.dart&#34; and add method to ... Not the best practice, les make it work.</p>
+<p>Now we can have a better looking code with it being one line and easy to read and understand.</p>
+<pre><code>for (final task in Task.tasks) _listTile(task),
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Modify the Task class to have two lists" duration="0">
+        <p>Lets modify the model &#34;model.dart&#34; and add method to ... Not the best practice, les make it work.</p>
 <pre><code>static List&lt;Task&gt; get currentTasks =&gt;
       _tasks.where((task) =&gt; !task.completed).toList();
 
