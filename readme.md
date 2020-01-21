@@ -106,13 +106,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: null, //TODO: Change to the task list view widget.
+      home: Scaffold(), //TODO: Change to the task list view widget.
     );
   }
 }
 ```
 
-We will change the home parameter later.
+We will change the `home parameter later.
 
 ## Task: create Task class
 
@@ -183,7 +183,57 @@ class MyApp extends StatelessWidget {
 
 ## Task: create a ListView of all the tasks
 
-TODO
+We want to show a list so let us use the `ListView` widget to display several `ListTile` elements depending on the amount of tasks. Each `ListTile` will show an icon, title and subtitle.
+
+Here we have the `ListTile` widget with the task information we want to show:
+
+```dart
+...
+
+ListTile(
+  leading: IconButton(
+    icon: (task.completed)
+        ? Icon(Icons.check_circle)
+        : Icon(Icons.radio_button_unchecked),
+    onPressed: null, // TODO: handle toggling
+  ),
+  title: Text(task.name),
+  subtitle: (task.details != null) ? Text(task.details) : null,
+),
+
+...
+
+```
+
+We will be putting this in the `children` parameter of our `ListView` widget.
+
+But to display a `ListTile` for each task in all of our tasks, we need to utilize a for each loop.
+
+We need to modify our `pubspec.yaml` so we can use this for each loop functionality.
+
+```yaml
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+```
+
+We will do it like this so we can iterate through our list of tasks:
+
+```dart
+for (final task in Task.tasks)
+  ListTile(
+    leading: IconButton(
+      icon: (task.completed)
+          ? Icon(Icons.check_circle)
+          : Icon(Icons.radio_button_unchecked),
+      onPressed: null, // TODO: handle toggling
+    ),
+    title: Text(task.name),
+    subtitle: (task.details != null) ? Text(task.details) : null,
+  ),
+
+```
+
+Now we can put it in our `body` parameter of our `Scaffold` widget. So the code will look like this now:
 
 ```dart
 import 'package:flutter/material.dart';
@@ -215,32 +265,57 @@ class TaskListView extends StatelessWidget {
     );
   }
 }
+
 ```
 
-We are using a for loop so modify `pubspec.yaml`
+## Task: Make the TaskListView class stateful
 
-```yaml
-sdk: ">=2.2.2 <3.0.0"
-```
+Now we have the design of the list, so let us handle the toggling of done and not done state.
 
+First we need to maket the class extend `StatefulWidget` so we can update and redraw the UI on the screen upon state changes.
 
-Talk about hotreload, and restart 
+In our `ListTile` we have an `onPressed` parameter that handles touch events on out icon. We want to change the task's state of completed and to do that we need to use a method called `setState`. This method notifies that there is a change in the state and will then invoke methods to redraw the UI again.
 
-Now you got the checkbox, lets see if we can reflect these toggle in code
-Talk about stateful vs stateless widgets
+In `task_list_view.dart`:
 
-In `task_list_view.dart`
-
-Change `onPressed: () => toggleTask(task),`
-
-Change the class  extend to StatefulWidget
+Change `StatelessWidget` to `StatefulWidget` and have the class setup like this:
 
 ```dart
-@override
+class TaskListView extends StatefulWidget {
+
+  @override
   _TaskListViewState createState() => _TaskListViewState();
+
 }
 
 class _TaskListViewState extends State<TaskListView> {
+  
+  ...
+  
+}
+
+ ```
+
+Let us handle the touch event:
+
+```dart
+    ...
+
+    onPressed: () => setState(() {
+      task.completed = !task.completed;
+    }),
+
+    ...
+
+```
+
+## Task: Refactor the code
+
+In the same class we will refactor the code by creating a method that takes in a Task as a parameter and will update its completed state.
+
+```dart
+  ...
+
   void toggleTask(Task task) {
     setState(() {
       task.completed = !task.completed;
@@ -249,15 +324,22 @@ class _TaskListViewState extends State<TaskListView> {
   
   ...
   
-}
  ```
 
-------------------------  thats pretty easy and awesome check if its break time-----------------
+Apply the mothod call in the `onPressed` parameter so it will look like this:
 
+```dart
+    ...
 
-This looks like a long list would be nice if we can seperate our list to the ones completed different 
+    onPressed: () => toggleTask(task),
 
-We extract the list in its own list tile widget 
+    ...
+
+```
+
+This looks like a long list, but it would be nice if we seperated our list to avoid having a long `build` method.
+
+We will extract the list in to its own list tile widget.
 
 ```dart
 Widget _listTile(Task task) {
@@ -274,9 +356,13 @@ Widget _listTile(Task task) {
   }
 ```
 
+Now we can have a better looking code with it being one line and easy to read and understand.
 
-`for (final task in Task.tasks) _listTile(task),
+```dart
+for (final task in Task.tasks) _listTile(task),
+```
 
+## Task: Modify the Task class to have two lists
 
 Lets modify the model "model.dart" and add method to ... Not the best practice, les make it work.
 
