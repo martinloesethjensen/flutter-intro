@@ -30,7 +30,9 @@
       <google-codelab-step label="Overview" duration="0">
         <p>With this codelab, you&#39;ll get a basic understanding of how Flutter works. You&#39;ll know just how easy it can be to do prototyping with Flutter.</p>
 <p>We&#39;ll have a look at the programming language used with Flutter - Dart.<br><br>Then we will start creating a simple todo app with very little functionality.</p>
+<p>TODO: Add image of what we will create!</p>
 <p>You&#39;ll find the completed code files at the end of this codelab.</p>
+<p>TODO: Add links to the completed files!</p>
 
 
       </google-codelab-step>
@@ -40,6 +42,7 @@
 <p>Head over to Flutter&#39;s <a href="https://flutter.dev/docs/get-started/install" target="_blank">getting started page</a>, to install the necessary things needed for this codelab.</p>
 <p>Link to my slides can be found <a href="https://docs.google.com/presentation/d/1109B3fQyqNO5zVxh4j4mRO9A9I-5KumPpqgcd6xDKOA/edit?usp=sharing" target="_blank">here</a>.</p>
 <p>When you have installed Flutter and your prefered IDE, then it&#39;s time to start.</p>
+<p>Remember to <a href="https://flutter.dev/docs/get-started/install/macos#run-flutter-doctor" target="_blank">run flutter doctor</a> to check that you are not missing anything.</p>
 
 
       </google-codelab-step>
@@ -122,7 +125,7 @@ class MyApp extends StatelessWidget {
     
       <google-codelab-step label="Task: create Task class" duration="0">
         <p>As we are going to create a todo app we need to think about what is needed.<br>We need a screen with a list of tasks, so let us start of with creating a class called <code>Task</code> that has 3 variables: <code>name</code>, <code>details</code>, and <code>completed</code>. Furthermore, we will have to static variables that all Task objects can access.</p>
-<p>As this class is what is called a model then let us put this class in a folder we call <code>models</code>.<br>This folder needs to be created in the <code>lib</code> folder.</p>
+<p>As this class is what is called a model then let us put this class in a folder we call <code>model</code>.<br>This folder needs to be created in the <code>lib</code> folder.</p>
 <pre><code>class Task {
   String name, details;
   bool completed = false;
@@ -145,7 +148,8 @@ class MyApp extends StatelessWidget {
       </google-codelab-step>
     
       <google-codelab-step label="Task: create TaskListView class" duration="0">
-        <p>We want this widget to be a list that shows all tasks. Let&#39;s start by creating a <code>StatelessWidget</code> and then update the <code>home</code> parameter in <code>main.dart</code>.</p>
+        <p>First create a dart file called <code>task_list_view</code>.</p>
+<p>We want this widget to be a list that shows all tasks. Let&#39;s start by creating a <code>StatelessWidget</code> and then update the <code>home</code> parameter in <code>main.dart</code>.</p>
 <pre><code>import &#39;package:flutter/material.dart&#39;;
 
 class TaskListView extends StatelessWidget {
@@ -221,11 +225,7 @@ ListTile(
 
 </code></pre>
 <p>Now we can put it in our <code>body</code> parameter of our <code>Scaffold</code> widget. So the code will look like this now:</p>
-<pre><code>import &#39;package:flutter/material.dart&#39;;
-
-import &#39;model/task.dart&#39;;
-
-class TaskListView extends StatelessWidget {
+<pre><code>class TaskListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -334,35 +334,44 @@ class _TaskListViewState extends State&lt;TaskListView&gt; {
       </google-codelab-step>
     
       <google-codelab-step label="Task: Modify the Task class to have two lists" duration="0">
-        <p>Lets modify the model &#34;model.dart&#34; and add method to ... Not the best practice, les make it work.</p>
+        <p>Now we will create two static lists of tasks: <code>currentTasks</code> and <code>completedTasks</code>.<br>With them being static we are able to get the two lists anywhere without creating a Task object.</p>
 <pre><code>static List&lt;Task&gt; get currentTasks =&gt;
       _tasks.where((task) =&gt; !task.completed).toList();
 
 static List&lt;Task&gt; get completedTasks =&gt;
       _tasks.where((task) =&gt; task.completed).toList();
-</code></pre>
-<p>Now we seperate the current task and completed tasks in the list view</p>
-<pre><code>for (final task in Task.currentTasks) _listTile(task),
-for (final task in Task.currentTasks) _listTile(task),
-          Divider(),
-          ExpansionTile(
-            key: _completedKey,
-            title: Text(&#39;Completed (${Task.completedTasks.length})&#39;),
-            children: &lt;Widget&gt;[
-              for (final task in Task.completedTasks) _listTile(task),
-            ],
-          )
-        ],
-</code></pre>
-<p>under class _TaskListViewState extends State {</p>
-<pre><code>  final GlobalKey&lt;State&gt; _completedKey = GlobalKey&lt;State&gt;();
-</code></pre>
-<p>—————- So we would like to add some tasks to the list ————–<br>Lets create a new dart file <code>add_task_dialog.dart</code> -&gt; stateful widget, I will copy some code and explain as i go along.....</p>
-<pre><code>import &#39;package:flutter/material.dart&#39;;
 
-import &#39;model.dart&#39;;
+</code></pre>
+<p>This is not best practise in the way of sharing data, but we will keep it simple.</p>
+<p>Now that we have two different lists we can seperate them in the way we want to show them. In the view of current tasks and completed tasks.</p>
+<pre><code>...
 
-class AddTaskDialog extends StatefulWidget {
+children: &lt;Widget&gt;[
+  ExpansionTile(title: Text(&#34;Current Tasks&#34;),
+    initiallyExpanded: true,
+    children: &lt;Widget&gt;[
+      for (final task in Task.currentTasks) _listTile(task),
+    ],
+  ),
+  Divider(),
+  ExpansionTile(title: Text(&#34;Completed Tasks&#34;),
+    children: &lt;Widget&gt;[
+      for (final task in Task.completedTasks) _listTile(task),
+    ],
+  )
+],
+
+...
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Create new screen to adding a new task" duration="0">
+        <p>Lets create a new dart file <code>add_task_dialog.dart</code> which will be a stateful widget. The reason we want it stateful is because it will have a <code>TextField</code> widget that takes some input and displays it in the app.</p>
+<p>The class will have two private variables to save the two inputs from the user: <code>_taskName</code> &amp; <code>_taskDetails</code>.<br>There will be a private <code>_save</code> method which task is to create a task object with the value input and then navigate back to the previous screen with the task object.<br>It will be a <code>Form</code> widget that have two <code>TextField</code>s and in those two we will save the user input to the to variables we have in the class.</p>
+<pre><code>class AddTaskDialog extends StatefulWidget {
   @override
   _TaskDialogState createState() =&gt; _TaskDialogState();
 }
@@ -373,7 +382,7 @@ class _TaskDialogState extends State&lt;AddTaskDialog&gt; {
 
   void _save() {
     final task = _taskName.isNotEmpty ? Task(_taskName, _taskDetails) : null;
-    Navigator.of(context).pop(task);
+    Navigator.of(context).pop(task); // will send task back
   }
 
   @override
@@ -386,28 +395,25 @@ class _TaskDialogState extends State&lt;AddTaskDialog&gt; {
       ),
       body: Form(
         child: ListView(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           children: &lt;Widget&gt;[
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               alignment: Alignment.bottomLeft,
               child: TextField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: &#39;Name&#39;,
-                  filled: true,
                 ),
-                style: theme.textTheme.headline,
                 onChanged: (value) =&gt; _taskName = value,
                 autofocus: true,
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               alignment: Alignment.bottomLeft,
               child: TextField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: &#39;Details&#39;,
-                  filled: true,
                 ),
                 onChanged: (value) =&gt; _taskDetails = value,
               ),
@@ -418,13 +424,22 @@ class _TaskDialogState extends State&lt;AddTaskDialog&gt; {
     );
   }
 }
+
 </code></pre>
-<p>We modify our <code>task_list</code> add a floating action button</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Add a floating action button" duration="0">
+        <p>Now let us update our <code>MyApp</code> class by adding a floating action button.<br>We will add a <code>FloatingActionButton</code> widget to a <code>floatingActionButton</code> parameter in the <code>Scaffold</code> widget.<br>The button will navigate to our <code>TaskDialog</code> screen.</p>
 <pre><code>floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: _addTask,
       ),
 
-void _addTask() {
+</code></pre>
+<p>Now create the <code>_addTask</code> as shown below.</p>
+<pre><code>void _addTask() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -433,21 +448,40 @@ void _addTask() {
       ),
     );
   }
+
 </code></pre>
-<p>Lets also change <code>toggleTask</code> to be private for consistency <code>_toggleTask</code></p>
+<p>Lets also change the current <code>toggleTask</code> method to be private for consistency <code>_toggleTask</code>.</p>
 <p>We can navigate from tasklist to add task dialog, finally lets add a button to save.</p>
-<pre><code>actions: &lt;Widget&gt;[
-          FlatButton(
-            child: Text(
-              &#39;SAVE&#39;,
-              style: theme.textTheme.body1.copyWith(color: Colors.white),
-            ),
-            onPressed: _save,
-          ),
-        ],
-      ),
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Add a save button" duration="0">
+        <p>Let&#39;s navigate back to <code>TaskDialog</code> and add a <code>FlatButton</code> that will call our private method, <code>_save</code>, to save the task and navigate back.</p>
+<p>In the <code>AppBar</code> widget add the button and handle the <code>onPressed</code> parameter to call <code>_save</code>.</p>
+<pre><code>...
+
+actions: &lt;Widget&gt;[
+  FlatButton(
+    child: Text(
+      &#39;SAVE&#39;,
+      style: TextStyle(color: Colors.white),
+    ),
+    onPressed: _save,
+  ),
+],
+
+...
+
 </code></pre>
-<p>When save returns we have to wait for the dialog as it returns task. So lets change the _add task to async and save it to the list</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Handle asynchronous call" duration="0">
+        <p>As we now know the task will get back with us we need to change the code to wait for the task. Only then can we save the new task to the list of current tasks.</p>
+<p>So let&#39;s change the <code>_addTask</code> method to be an <code>async</code> code block and add <code>await</code> before the <code>Navigator.push(...)</code>. We know that it will return something when we are navigating back from the <code>TaskDialog</code> screen.</p>
+<p>The <code>final task</code> variable can be <code>null</code> therefore, we need to do a null check before saving the task.</p>
 <pre><code>void _addTask() async {
     final task = await Navigator.push(
       context,
@@ -463,43 +497,61 @@ void _addTask() {
       });
     }
   }
+  
 </code></pre>
-<p>——— finally if we have time lets look at theming and delete</p>
-<p>In <code>main.dart</code><br>We see <code>theme:</code> , lets add the dark theme</p>
-<pre><code>theme: ThemeData.dark(),
-</code></pre>
-<p>Delete task -&gt; we can play with platform specific dialogs here</p>
-<p>Lets add an trailing ICON</p>
-<pre><code>subtitle: (task.details != null) ? Text(task.details) : null,
-      trailing: IconButton(
-        icon: Icon(Icons.delete_forever),
-        onPressed: () =&gt; _deleteTask(task),
-      ),
-</code></pre>
-<pre><code>import &#39;dart:io&#39;;
 
-import &#39;package:flutter/cupertino.dart&#39;;
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Change to dark mode" duration="0">
+        <p>In <code>main.dart</code><br>We see the <code>theme</code> parameter and here we will change it to <code>ThemeData.dark()</code>. This will bring the theme of the whole app into dark mode.</p>
+<pre><code>theme: ThemeData.dark(),
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task: Add funktionality to delete a task" duration="0">
+        <p>Now we also want to delete tasks from our list.</p>
+<p>This could also be a case where we&#39;d want a native feel to our delete dialogs.</p>
+<p>Let us first add a trailing icon to our <code>ListTile</code> widget.</p>
+<pre><code>...
+
+trailing: IconButton(
+  icon: Icon(Icons.delete_forever),
+  onPressed: () =&gt; _deleteTask(task),
+),
+
+...
+
+</code></pre>
+<p>As Flutter is platform aware, we have the ability to let the app decide on which widgets to show. This is useful if we want a native feel to our app.</p>
+<p>Because we are sending a <code>bool</code> with our navigator then we have to ake the code block asynchronous with <code>async</code> &amp; <code>await</code>.</p>
+<p>For iOS dialog we will be using <code>CupertinoAlertDialog</code> along with two actions of the <code>CupertinoDialogAction</code> widget.<br>For android dialog we will be using <code>AlertDialog</code> with two <code>FlatButton</code>s to handle the actions.</p>
+<p>In the end we will be removing the task from the list depending on the <code>confirmed</code> variable which is a boolean.</p>
+<pre><code>import &#39;package:flutter/cupertino.dart&#39;; // for the use of cupertino widgets
 
 void _deleteTask(Task task) async {
-    final confirmed = (Platform.isIOS)
+    final confirmed = (Platform.isIOS) // checking to see which widget we will be showing
         ? await showCupertinoDialog&lt;bool&gt;(
             context: context,
             builder: (context) =&gt; CupertinoAlertDialog(
-              title: const Text(&#39;Delete Task?&#39;),
-              content: const Text(&#39;This task will be permanently deleted.&#39;),
+              title: Text(&#39;Delete Task?&#39;),
+              content: Text(&#39;This task will be permanently deleted.&#39;),
               actions: &lt;Widget&gt;[
                 CupertinoDialogAction(
-                  child: const Text(&#39;Delete&#39;),
-                  isDestructiveAction: true,
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: const Text(&#39;Cancel&#39;),
+                  child: Text(&#39;Cancel&#39;),
                   isDefaultAction: true,
                   onPressed: () {
                     Navigator.of(context).pop(false);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text(&#39;Delete&#39;),
+                  isDestructiveAction: true,
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
                   },
                 ),
               ],
@@ -508,17 +560,17 @@ void _deleteTask(Task task) async {
         : await showDialog&lt;bool&gt;(
             context: context,
             builder: (context) =&gt; AlertDialog(
-              title: const Text(&#39;Delete Task?&#39;),
-              content: const Text(&#39;This task will be permanently deleted.&#39;),
+              title: Text(&#39;Delete Task?&#39;),
+              content: Text(&#39;This task will be permanently deleted.&#39;),
               actions: &lt;Widget&gt;[
                 FlatButton(
-                  child: const Text(&#34;CANCEL&#34;),
+                  child: Text(&#34;Cancel&#34;),
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
                 ),
                 FlatButton(
-                  child: const Text(&#34;DELETE&#34;),
+                  child: Text(&#34;Delete&#34;),
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
@@ -527,18 +579,13 @@ void _deleteTask(Task task) async {
             ),
           );
 
-    if (confirmed ?? false) {
+    if (confirmed ?? false) { // ?? is a check to see if null then do something else
       setState(() {
         Task.tasks.remove(task);
       });
     }
   }
-</code></pre>
-<p>For consistency lets change floating button to:</p>
-<pre><code>floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: _addTask,
-      ),
+
 </code></pre>
 
 
@@ -547,28 +594,30 @@ void _deleteTask(Task task) async {
       <google-codelab-step label="Completed files" duration="0">
         <h2 is-upgraded>main.dart</h2>
 <pre><code>import &#39;package:flutter/material.dart&#39;;
-import &#39;screens/task_list_view.dart&#39;;
+import &#39;package:todo_app_ex/task_list_view.dart&#39;;
 
 void main() =&gt; runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: &#39;Flutter Todo Demo&#39;,
+      title: &#39;Flutter Demo&#39;,
       theme: ThemeData.dark(),
       home: TaskListView(),
     );
   }
 }
 
+
 </code></pre>
-<h2 is-upgraded>modules/task.dart</h2>
+<h2 is-upgraded>model/task.dart</h2>
 <pre><code>class Task {
   String name, details;
   bool completed = false;
 
-  static List&lt;Task&gt; _tasks = [
+  static List&lt;Task&gt; _tasks = [ // The _ in the variable name makes it private.
     Task(&#39;Choose topic&#39;, &#39;testing desc&#39;),
     Task(&#39;Drink coffee&#39;, null),
     Task(&#39;Prepare codelab&#39;, null),
@@ -577,13 +626,11 @@ class MyApp extends StatelessWidget {
 
   static List&lt;Task&gt; get tasks =&gt; _tasks;
 
-  static List&lt;Task&gt; get currentTasks =&gt;
-      _tasks.where((task) =&gt; !task.completed).toList();
+  static List&lt;Task&gt; get currentTasks =&gt; _tasks.where((task) =&gt; !task.completed).toList();
 
-  static List&lt;Task&gt; get completedTasks =&gt;
-      _tasks.where((task) =&gt; task.completed).toList();
+  static List&lt;Task&gt; get completedTasks =&gt; _tasks.where((task) =&gt; task.completed).toList();
 
-  Task(this.name, this.details);
+  Task(this.name, this.details);  // Constructor with parameters for creating a Task object
 }
 
 </code></pre>
@@ -592,9 +639,9 @@ class MyApp extends StatelessWidget {
 
 import &#39;package:flutter/cupertino.dart&#39;;
 import &#39;package:flutter/material.dart&#39;;
-import &#39;package:todo_app_meetup/models/task.dart&#39;;
+import &#39;package:todo_app_ex/screens/add_task_dialog.dart&#39;;
 
-import &#39;add_task_dialog.dart&#39;;
+import &#39;../model/task.dart&#39;;
 
 class TaskListView extends StatefulWidget {
   @override
@@ -602,99 +649,6 @@ class TaskListView extends StatefulWidget {
 }
 
 class _TaskListViewState extends State&lt;TaskListView&gt; {
-  void _toggleTask(Task task) {
-    setState(() {
-      task.completed = !task.completed;
-    });
-  }
-
-  void _deleteTask(Task task) async {
-    final confirmed = (Platform.isIOS)
-        ? await showCupertinoDialog&lt;bool&gt;(
-            context: context,
-            builder: (context) =&gt; CupertinoAlertDialog(
-              title: const Text(&#39;Delete Task?&#39;),
-              content: const Text(&#39;This task will be permanently deleted.&#39;),
-              actions: &lt;Widget&gt;[
-                CupertinoDialogAction(
-                  child: const Text(&#39;Delete&#39;),
-                  isDestructiveAction: true,
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: const Text(&#39;Cancel&#39;),
-                  isDefaultAction: true,
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-              ],
-            ),
-          )
-        : await showDialog&lt;bool&gt;(
-            context: context,
-            builder: (context) =&gt; AlertDialog(
-              title: const Text(&#39;Delete Task?&#39;),
-              content: const Text(&#39;This task will be permanently deleted.&#39;),
-              actions: &lt;Widget&gt;[
-                FlatButton(
-                  child: const Text(&#34;CANCEL&#34;),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-                FlatButton(
-                  child: const Text(&#34;DELETE&#34;),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            ),
-          );
-
-    if (confirmed ?? false) {
-      setState(() {
-        Task.tasks.remove(task);
-      });
-    }
-  }
-
-  void _addTask() async {
-    final task = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =&gt; AddTaskDialog(),
-        fullscreenDialog: true,
-      ),
-    );
-
-    if (task != null) {
-      setState(() {
-        Task.tasks.add(task);
-      });
-    }
-  }
-
-  Widget _listTile(Task task) {
-    return ListTile(
-      leading: IconButton(
-        icon: (task.completed)
-            ? Icon(Icons.check_circle)
-            : Icon(Icons.radio_button_unchecked),
-        onPressed: () =&gt; _toggleTask(task),
-      ),
-      title: Text(task.name),
-      subtitle: (task.details != null) ? Text(task.details) : null,
-      trailing: IconButton(
-        icon: Icon(Icons.delete_forever),
-        onPressed: () =&gt; _deleteTask(task),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -704,7 +658,7 @@ class _TaskListViewState extends State&lt;TaskListView&gt; {
       body: ListView(
         children: &lt;Widget&gt;[
           ExpansionTile(
-            title: Text(&#39;Current tasks (${Task.currentTasks.length})&#39;),
+            title: Text(&#34;Completed Tasks&#34;),
             initiallyExpanded: true,
             children: &lt;Widget&gt;[
               for (final task in Task.currentTasks) _listTile(task),
@@ -712,83 +666,172 @@ class _TaskListViewState extends State&lt;TaskListView&gt; {
           ),
           Divider(),
           ExpansionTile(
-            title: Text(&#39;Completed (${Task.completedTasks.length})&#39;),
+            title: Text(&#34;Completed Tasks&#34;),
             children: &lt;Widget&gt;[
               for (final task in Task.completedTasks) _listTile(task),
             ],
-          ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addTask,
         child: Icon(Icons.add),
+        onPressed: _addTask,
       ),
     );
+  }
+
+  ListTile _listTile(Task task) {
+    return ListTile(
+      leading: IconButton(
+        icon: (task.completed)
+            ? Icon(Icons.check_circle)
+            : Icon(Icons.radio_button_unchecked),
+        onPressed: () =&gt; toggleTask(task),
+      ),
+      trailing: IconButton(
+        icon: Icon(Icons.delete_forever),
+        onPressed: () =&gt; _deleteTask(task),
+      ),
+      title: Text(task.name),
+      subtitle: (task.details != null) ? Text(task.details) : null,
+    );
+  }
+
+  void toggleTask(Task task) {
+    setState(() {
+      task.completed = !task.completed;
+    });
+  }
+
+  void _addTask() async {
+    final Task newTask = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =&gt; TaskDialog(),
+        fullscreenDialog: true,
+      ),
+    );
+
+    if (newTask ?? false) {
+      setState(() {
+        Task.tasks.add(newTask);
+      });
+    }
+  }
+
+  void _deleteTask(Task task) async {
+    final confirmed =
+        (Platform.isIOS) // checking to see which widget we will be showing
+            ? await showCupertinoDialog&lt;bool&gt;(
+                context: context,
+                builder: (context) =&gt; CupertinoAlertDialog(
+                  title: Text(&#39;Delete Task?&#39;),
+                  content: Text(&#39;This task will be permanently deleted.&#39;),
+                  actions: &lt;Widget&gt;[
+                    CupertinoDialogAction(
+                      child: Text(&#39;Cancel&#39;),
+                      isDefaultAction: true,
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text(&#39;Delete&#39;),
+                      isDestructiveAction: true,
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                  ],
+                ),
+              )
+            : await showDialog&lt;bool&gt;(
+                context: context,
+                builder: (context) =&gt; AlertDialog(
+                  title: Text(&#39;Delete Task?&#39;),
+                  content: Text(&#39;This task will be permanently deleted.&#39;),
+                  actions: &lt;Widget&gt;[
+                    FlatButton(
+                      child: Text(&#34;Cancel&#34;),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text(&#34;Delete&#34;),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                  ],
+                ),
+              );
+
+    if (confirmed ?? false) {
+      // ?? is a check to see if null then do something else
+      setState(() {
+        Task.tasks.remove(task);
+      });
+    }
   }
 }
 
 </code></pre>
 <h2 is-upgraded>screens/add_task_dialog.dart</h2>
 <pre><code>import &#39;package:flutter/material.dart&#39;;
-import &#39;package:todo_app_meetup/models/task.dart&#39;;
 
-class AddTaskDialog extends StatefulWidget {
+import &#39;../model/task.dart&#39;;
+
+class TaskDialog extends StatefulWidget {
   @override
-  _AddTaskDialogState createState() =&gt; _AddTaskDialogState();
+  _TaskDialogState createState() =&gt; _TaskDialogState();
 }
 
-class _AddTaskDialogState extends State&lt;AddTaskDialog&gt; {
-  String _taskName = &#39;&#39;;
-  String _taskDetails;
+class _TaskDialogState extends State&lt;TaskDialog&gt; {
+  String _taskName = &#34;&#34;;
+  String _taskDesc;
 
   void _save() {
-    final task = _taskName.isNotEmpty ? Task(_taskName, _taskDetails) : null;
-    Navigator.of(context).pop(task);
+    final task = _taskName.isNotEmpty ? Task(_taskName, _taskDesc) : null;
+    Navigator.of(context).pop(task); // will send task back
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(&#39;New Task&#39;),
+        title: Text(&#34;New Task&#34;),
         actions: &lt;Widget&gt;[
           FlatButton(
             child: Text(
-              &#39;SAVE&#39;,
-              style: theme.textTheme.body1.copyWith(color: Colors.white),
+              &#34;Save&#34;,
+              style: TextStyle(color: Colors.white),
             ),
             onPressed: _save,
-          ),
+          )
         ],
       ),
       body: Form(
         child: ListView(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           children: &lt;Widget&gt;[
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              alignment: Alignment.bottomLeft,
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
-                decoration: const InputDecoration(
-                  labelText: &#39;Name&#39;,
-                  filled: true,
+                decoration: InputDecoration(
+                  labelText: &#34;Task name&#34;,
                 ),
-                style: theme.textTheme.headline,
-                onChanged: (value) =&gt; _taskName = value,
                 autofocus: true,
+                onChanged: (value) =&gt; _taskName = value,
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              alignment: Alignment.bottomLeft,
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
-                decoration: const InputDecoration(
-                  labelText: &#39;Details&#39;,
-                  filled: true,
+                decoration: InputDecoration(
+                  labelText: &#34;Task details&#34;,
                 ),
-                onChanged: (value) =&gt; _taskDetails = value,
+                onChanged: (value) =&gt; _taskDesc = value,
               ),
             ),
           ],
