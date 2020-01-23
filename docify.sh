@@ -8,6 +8,8 @@ mv $CODELAB_FOLDER docs
 
 cd docs
 
+rm -rf img
+
 cd $CODELAB_FOLDER
 
 mv img ..
@@ -17,3 +19,5 @@ mv index.html ..
 cd ..
 
 rm -r $CODELAB_FOLDER
+
+claat serve
