@@ -15,11 +15,24 @@ With this codelab, you'll get a basic understanding of how Flutter works. You'll
 We'll have a look at the programming language used with Flutter - Dart.  
 Then we will start creating a simple todo app with very little functionality.
 
-TODO: Add image of what we will create!
-
 You'll find the completed code files at the end of this codelab.
 
-TODO: Add links to the completed files!
+## What you'll learn
+
+- Basic understanding of Dart
+
+- Working with widgets
+
+- Updating UI with StatefulWidget
+
+- Darkmode theme
+
+- Navigation between screens
+
+## The final product
+
+![Todo App Light Mode](img/todo_light.png)
+![Todo App Dark Mode](img/todo_dark.png)
 
 ## Prerequsits
 
