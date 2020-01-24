@@ -131,7 +131,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-We will change the `home parameter later.
+We will change the `home` parameter later.
 
 ## Task: create Task class
 
