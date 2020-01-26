@@ -32,7 +32,6 @@ You'll find the completed code files at the end of this codelab.
 ## The final product
 
 ![Todo App Light Mode](img/todo_light.png)
-![Todo App Dark Mode](img/todo_dark.png)
 
 ## Prerequsits
 
