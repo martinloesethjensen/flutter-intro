@@ -1,6 +1,6 @@
 # Introduction to Mobile App Development with Flutter
 
-This is a Flutter Introduction codelab that aims to give people a hands-on experience with Flutter development for.
+This is a Flutter Introduction codelab that aims to give people a hands-on experience with Flutter development.
 The final product of this codelab is a very simple todo app that can add and remove tasks from a list of todos.
 
 The website to the codelab can be found [here](https://martinjensen.tech/flutter-intro/).
