@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2020-01-27T22:48:30+01:00",
+  "updated": "2020-01-27T23:44:23+01:00",
   "id": "flutter-introduction-workshop",
   "duration": 0,
   "title": "Introduction to Mobile App Development with Flutter",
@@ -12,11 +12,11 @@
   "source": "codelab.md",
   "theme": "",
   "status": [
-    "completed"
+    "published"
   ],
   "category": [
     "flutter",
-    "mobile app development"
+    "dart"
   ],
   "tags": [
     "flutter"

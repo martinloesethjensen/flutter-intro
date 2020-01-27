@@ -1,8 +1,8 @@
 summary: Introduction to Mobile App Development with Flutter
 id: flutter-introduction-workshop
-categories: Flutter, Mobile App Development
+categories: flutter, dart
 tags: Flutter
-status: Completed
+status: Published
 authors: Martin Løseth Jensen
 Feedback Link: https://github.com/martinloesethjensen/flutter-intro/issues/new
 
@@ -16,6 +16,8 @@ We'll have a look at the programming language used with Flutter - Dart.
 Then we will start creating a simple todo app with very little functionality.
 
 You'll find the completed code files at the end of this codelab.
+
+![Flutter image](img/flutter.png)
 
 ## What you'll learn
 
@@ -45,11 +47,16 @@ When you have installed Flutter and your prefered IDE, then it's time to start.
 
 Remember to [run flutter doctor](https://flutter.dev/docs/get-started/install/macos#run-flutter-doctor) to check that you are not missing anything.
 
+[Download Flutter](https://flutter.dev/docs/get-started/install)
+
 ## Trying out Dart
 
 [Dartpad](https://dartpad.dartlang.org/) is a great way to learning the basics of dart and testing out Dart code on the browser.
 
 Along with the Flutter 1.12 release in December 11th 2019, dartpad now supports Flutter. Try it out here: [Counter Example](https://dartpad.dev/b6409e10de32b280b8938aa75364fa7b).
+
+### Embed an iframe
+![https://dartpad.dev/embed-inline.html?id=5d70bc1889d055c7a18d35d77874af88]("Try me")
 
 **Simple Dart Sample:**
 
