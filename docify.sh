@@ -1,6 +1,6 @@
 #!/bin/bash
 
-claat export README.md
+claat export codelab.md
 
 CODELAB_FOLDER="flutter-introduction-workshop"
 

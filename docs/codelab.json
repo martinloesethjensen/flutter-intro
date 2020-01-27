@@ -3,16 +3,16 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2020-01-26T15:10:29+01:00",
+  "updated": "2020-01-27T22:48:30+01:00",
   "id": "flutter-introduction-workshop",
   "duration": 0,
   "title": "Introduction to Mobile App Development with Flutter",
   "authors": "Martin Løseth Jensen",
   "summary": "Introduction to Mobile App Development with Flutter",
-  "source": "README.md",
+  "source": "codelab.md",
   "theme": "",
   "status": [
-    "draft"
+    "completed"
   ],
   "category": [
     "flutter",
