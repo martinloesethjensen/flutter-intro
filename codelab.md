@@ -47,7 +47,7 @@ When you have installed Flutter and your prefered IDE, then it's time to start.
 
 Remember to [run flutter doctor](https://flutter.dev/docs/get-started/install/macos#run-flutter-doctor) to check that you are not missing anything.
 
-[Download Flutter](https://flutter.dev/docs/get-started/install)
+[Download Flutter SDK](https://flutter.dev/docs/get-started/install)
 
 ## Trying out Dart
 
@@ -55,10 +55,7 @@ Remember to [run flutter doctor](https://flutter.dev/docs/get-started/install/ma
 
 Along with the Flutter 1.12 release in December 11th 2019, dartpad now supports Flutter. Try it out here: [Counter Example](https://dartpad.dev/b6409e10de32b280b8938aa75364fa7b).
 
-### Embed an iframe
-![https://dartpad.dev/embed-inline.html?id=5d70bc1889d055c7a18d35d77874af88]("Try me")
-
-**Simple Dart Sample:**
+### Simple Dart Sample
 
 ```dart
 class Person {
