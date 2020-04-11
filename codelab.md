@@ -5,6 +5,7 @@ tags: Flutter
 status: Published
 authors: Martin Løseth Jensen
 Feedback Link: https://github.com/martinloesethjensen/flutter-intro/issues/new
+Analytics Account: 228626780
 
 # Introduction to Mobile App Development with Flutter
 
